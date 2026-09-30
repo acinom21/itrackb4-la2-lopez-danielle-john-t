@@ -1,26 +1,42 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>My Book List</title>
-</head>
+<head><title>Books</title></head>
 <body>
-    <h1>My Book List</h1>
-    <p>Prepared by: Juan Dela Cruz</p>
+    <p>Student: Danielle John T. Lopez</p>
 
-    <table border="1" cellpadding="8">
-        <tr>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Year</th>
-        </tr>
+    <h1>Books</h1>
 
-        @foreach ($books as $book)
-            <tr>
-                <td>{{ $book['title'] }}</td>
-                <td>{{ $book['author'] }}</td>
-                <td>{{ $book['year'] }}</td>
-            </tr>
-        @endforeach
-    </table>
+    @foreach ($books as $book)
+        <p>
+            <a href="/books/{{ $book['id'] }}">{{ $book['title'] }}</a>
+            by {{ $book['author'] }} ({{ $book['genre'] }}, {{ $book['year'] }})
+        </p>
+    @endforeach
 </body>
 </html>
+@extends('layouts.app')
+
+@section('title', 'Books')
+
+@section('content')
+    <h1>Books</h1>
+    <p class="sub">{{ count($books) }} books to browse</p>
+
+    <nav class="pills">
+        <a class="pill active" href="/books">All</a>
+        <a class="pill" href="/books/filter/Sci-Fi">Sci-Fi</a>
+        <a class="pill" href="/books/filter/Fantasy">Fantasy</a>
+        <a class="pill" href="/books/filter/Romance">Romance</a>
+        <a class="pill" href="/books/filter/Thriller">Thriller</a>
+    </nav>
+
+    <div class="grid">
+        @foreach ($books as $book)
+            <div class="card genre-{{ strtolower($book['genre']) }}">
+    <span class="badge">{{ $book['genre'] }}</span>
+    <h3><a href="/books/{{ $book['id'] }}">{{ $book['title'] }}</a></h3>
+    <p class="meta">{{ $book['author'] }} · {{ $book['year'] }}</p>
+</div>
+        @endforeach
+    </div>
+@endsection
